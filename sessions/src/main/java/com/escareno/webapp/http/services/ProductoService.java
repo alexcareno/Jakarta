@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ProductoService {
     List<Producto> listar();
     Optional<Producto> buscar(String nombre);
+    Optional<Producto> findById(Long id);
 }

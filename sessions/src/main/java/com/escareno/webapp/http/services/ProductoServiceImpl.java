@@ -4,6 +4,7 @@ import com.escareno.webapp.http.models.Producto;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ProductoServiceImpl implements ProductoService {
@@ -17,5 +18,10 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Optional<Producto> buscar(String nombre) {
         return listar().stream().filter(p -> p.getNombre().equals(nombre)).findFirst();
+    }
+
+    @Override
+    public Optional<Producto> findById(Long id) {
+        return listar().stream().filter(p -> p.getId().equals(id)).findAny();
     }
 }
