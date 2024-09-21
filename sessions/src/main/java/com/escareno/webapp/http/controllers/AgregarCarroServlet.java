@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/agregar-carro")
+@WebServlet("/carro/agregar")
 public class AgregarCarroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,16 +24,11 @@ public class AgregarCarroServlet extends HttpServlet {
         Optional<Producto> producto = service.findById(id);
         if(producto.isPresent()) {
             ItemCarro item = new ItemCarro(1, producto.get());
-            Carro carro;
             HttpSession session = req.getSession();
-            if(session.getAttribute("carro") == null) {
-                carro = new Carro();
-                session.setAttribute("carro", carro);
-            } else {
-                carro = (Carro) session.getAttribute("carro");
-            }
+            Carro carro = (Carro) session.getAttribute("carro");
+
             carro.addItemCarro(item);
         }
-        resp.sendRedirect(req.getContextPath() + "/ver-carro");
+        resp.sendRedirect(req.getContextPath() + "/carro/ver");
     }
 }
