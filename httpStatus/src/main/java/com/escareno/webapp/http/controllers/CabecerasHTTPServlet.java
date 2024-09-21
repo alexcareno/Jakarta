@@ -1,4 +1,4 @@
-package com.escareno.webapp.http;
+package com.escareno.webapp.http.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
