@@ -1,5 +1,6 @@
 package com.escareno.webapp.http.services;
 
+import com.escareno.webapp.http.models.Categoria;
 import com.escareno.webapp.http.models.Producto;
 
 import java.util.Arrays;
@@ -23,5 +24,25 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Optional<Producto> findById(Long id) {
         return listar().stream().filter(p -> p.getId().equals(id)).findAny();
+    }
+
+    @Override
+    public void guardar(Producto producto) {
+
+    }
+
+    @Override
+    public void eliminar(Long id) {
+
+    }
+
+    @Override
+    public List<Categoria> listarCategorias() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<Categoria> buscarCategoria(Long id) {
+        return Optional.empty();
     }
 }
