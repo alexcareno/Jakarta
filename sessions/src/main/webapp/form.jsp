@@ -1,91 +1,72 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Alejandro
-  Date: 25/09/2024
-  Time: 19:30
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" import="java.util.*, java.time.format.*, com.escareno.webapp.http.models.*" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.time.format.*"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%
-    List<Categoria> categorias = (List<Categoria>) request.getAttribute("categorias");
-    Map<String, String> errores = (Map<String, String>) request.getAttribute("errores");
-    Producto producto = (Producto) request.getAttribute("producto");
-    String fecha = producto.getFechaRegistro() != null ?
-            producto.getFechaRegistro().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
-%>
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Formulario Producto</title>
+    <title>Formulario productos</title>
 </head>
 <body>
-    <h1>Formulario productos</h1>
-    <form action="<%=request.getContextPath()%>/productos/form" method="POST">
+<h1>Formulario productos</h1>
+<form action="${pageContext.request.contextPath}/productos/form" method="post">
+    <div>
+        <label for="nombre">Nombre</label>
         <div>
-            <label for="nombre">Nombre</label>
-            <div>
-                <input type="text" name="nombre" id="nombre" value="<%=producto.getNombre() != null ? producto.getNombre() : ""%>">
-            </div>
-            <% if(errores != null && errores.containsKey("nombre")) { %>
-                <div style="color: red;"><%=errores.get("nombre")%></div>
-            <% } %>
+            <input type="text" name="nombre" id="nombre" value="${producto.nombre}">
         </div>
+        <c:if test="${errores != null && errores.containsKey('nombre')}">
+            <div style="color:red;">${errores.nombre}</div>
+        </c:if>
+    </div>
 
+    <div>
+        <label for="precio">Precio</label>
         <div>
-            <label for="precio">Precio</label>
-            <div>
-                <input type="number" name="precio" id="precio" value="<%=producto.getPrecio() > 0 ? producto.getPrecio() : ""%>">
-            </div>
-            <% if(errores != null && errores.containsKey("precio")) { %>
-            <div style="color: red;"><%=errores.get("precio")%></div>
-            <% } %>
+            <input type="number" name="precio" id="precio" value="${producto.precio > 0? producto.precio: ""}">
         </div>
+        <c:if test="${errores != null && not empty errores.precio}">
+            <div style="color:red;">${errores.precio}</div>
+        </c:if>
+    </div>
 
+    <div>
+        <label for="sku">Sku</label>
         <div>
-            <label for="sku">Sku</label>
-            <div>
-                <input type="text" name="sku" id="sku" value="<%=producto.getSku() != null ? producto.getSku() : ""%>">
-            </div>
-            <% if(errores != null && errores.containsKey("sku")) { %>
-            <div style="color: red;"><%=errores.get("sku")%></div>
-            <% } %>
+            <input type="text" name="sku" id="sku" value="${producto.sku}">
         </div>
+        <c:if test="${errores != null && not empty errores.sku}">
+            <div style="color:red;">${errores.sku}</div>
+        </c:if>
+    </div>
 
+    <div>
+        <label for="fecha_registro">Fecha Registro</label>
         <div>
-            <label for="fecha_registro">Fecha</label>
-            <div>
-                <input type="date" name="fecha_registro" id="fecha_registro" value="<%=fecha%>">
-            </div>
-            <% if(errores != null && errores.containsKey("fecha_registro")) { %>
-            <div style="color: red;"><%=errores.get("fecha_registro")%></div>
-            <% } %>
+            <input type="date" name="fecha_registro" id="fecha_registro" value="${producto.fechaRegistro != null? producto.fechaRegistro.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")): ""}">
         </div>
+        <c:if test="${errores != null && not empty errores.fecha_registro}">
+            <div style="color:red;">${errores.fecha_registro}</div>
+        </c:if>
+    </div>
 
+    <div>
+        <label for="categoria">Categoria</label>
         <div>
-            <label for="categoria">Categoria</label>
-            <div>
-                <select name="categoria" id="categoria">
-                    <option value="">--- seleccionar ---</option>
-                    <% for(Categoria c: categorias) { %>
-                    <option value="<%=c.getId()%>" <%=c.getId().equals(producto.getCategoria().getId()) ?
-                    "selected" : "" %>><%=c.getNombre()%></option>
-                    <% } %>
-                </select>
-            </div>
-            <% if(errores != null && errores.containsKey("categoria")) { %>
-            <div style="color: red;"><%=errores.get("categoria")%></div>
-            <% } %>
+            <select name="categoria" id="categoria">
+                <option value="">--- seleccionar ---</option>
+                <c:forEach items="${categorias}" var="c">
+                    <option value="${c.id}" ${c.id.equals(producto.categoria.id)? "selected": ""}>${c.nombre}</option>
+                </c:forEach>
+            </select>
         </div>
+        <c:if test="${errores != null && not empty errores.categoria}">
+            <div style="color:red;">${errores.categoria}</div>
+        </c:if>
+    </div>
 
-        <div>
-            <input type="submit" value="<%=(producto.getId() != null && producto.getId() > 0) ? "Editar" : "Crear" %>">
-        </div>
-        <input type="hidden" name="id" value="<%=producto.getId()%>">
-    </form>
+    <div><input type="submit" value="${producto.id!=null && producto.id>0? "Editar": "Crear"}"></div>
+    <input type="hidden" name="id" value="${producto.id}">
+</form>
 </body>
 </html>
