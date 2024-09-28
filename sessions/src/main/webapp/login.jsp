@@ -1,28 +1,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-  <h1>Iniciar Sesión</h1>
-  <form action="/sessions/login" method="POST">
-    <div>
-      <label for="username">Username</label>
+<jsp:include page="layout/header.jsp" />
+  <h1>${title}</h1>
+  <form action="${pageContext.request.contextPath}/login" method="POST">
+    <div class="row my-2">
+      <label class="form-label" for="username">Username</label>
       <div>
-        <input type="text" name="username" id="username">
+        <input class="form-control" type="text" name="username" id="username">
       </div>
     </div>
-    <div>
-      <label for="password">Password</label>
+    <div class="row my-2">
+      <label class="form-label" for="password">Password</label>
       <div>
-        <input type="password" name="password" id="password">
+        <input class="form-control" type="password" name="password" id="password">
       </div>
     </div>
-    <div>
-      <input type="submit" value="login">
+    <div class="row my-2">
+      <input type="submit" value="login" class="btn btn-primary">
     </div>
   </form>
-</body>
-</html>
+<jsp:include page="layout/footer.jsp" />

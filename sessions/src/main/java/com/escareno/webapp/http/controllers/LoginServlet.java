@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
                 out.println("    </head>");
                 out.println("    <body>");
                 out.println("        <h1>Bienvenido!! " + usernameOptional.get() + " you're logged in</h1>");
-                out.println(" <p><a href='"+ req.getContextPath() +"/index.html'>volver</a></p> ");
+                out.println(" <p><a href='"+ req.getContextPath() +"/index.jsp'>volver</a></p> ");
                 out.println(" <p><a href='"+ req.getContextPath() +"/logout'>cerrar sesión</a></p> ");
                 out.println("    </body>");
                 out.println("</html>");
@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
         if(USERNAME.equals(username) && PASSWORD.equals(password)) {
 
             req.getSession().setAttribute("username", username);
-
+            req.setAttribute("title", req.getAttribute("title") + ": Login");
             resp.sendRedirect(req.getContextPath() + "/login");
         } else {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized, sorry");
