@@ -1,8 +1,7 @@
 package com.escareno.webapp.http.controllers;
 
-import com.escareno.webapp.http.services.LoginService;
-import com.escareno.webapp.http.services.LoginServiceCookieImpl;
-import com.escareno.webapp.http.services.LoginServiceSessionImpl;
+import com.escareno.webapp.http.models.Usuario;
+import com.escareno.webapp.http.services.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,12 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    final static String USERNAME = "username";
-    final static String PASSWORD = "password";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,9 +43,13 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter(USERNAME);
-        String password = req.getParameter(PASSWORD);
-        if(USERNAME.equals(username) && PASSWORD.equals(password)) {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+
+        UsuarioService service = new UsuarioServiceImpl((Connection) req.getAttribute("conn"));
+        Optional<Usuario> user = service.login(username, password);
+
+        if(user.isPresent()) {
 
             req.getSession().setAttribute("username", username);
             req.setAttribute("title", req.getAttribute("title") + ": Login");

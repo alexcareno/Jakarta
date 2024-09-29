@@ -2,6 +2,7 @@ package com.escareno.webapp.http.filters;
 
 import com.escareno.webapp.http.services.ServiceJdbcException;
 import com.escareno.webapp.http.util.ConexcionDB;
+import com.escareno.webapp.http.util.ConexcionDBDS;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ public class ConexionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        try(Connection conn = ConexcionDB.getConnection()) {
+        try(Connection conn = ConexcionDBDS.getConnection()) {
 
             if(conn.getAutoCommit()) {
                 conn.setAutoCommit(false);
