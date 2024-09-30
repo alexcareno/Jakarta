@@ -1,32 +1,32 @@
 package com.escareno.webapp.http.services;
 
+import com.escareno.webapp.http.config.ProductoServicePrincipal;
+import com.escareno.webapp.http.config.Service;
 import com.escareno.webapp.http.models.Categoria;
 import com.escareno.webapp.http.models.Producto;
-import com.escareno.webapp.http.repositories.CategoriaRepositoryImpl;
-import com.escareno.webapp.http.repositories.ProductoRepositoryImpl;
 import com.escareno.webapp.http.repositories.Repository;
+import jakarta.inject.Inject;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class ProductoServiceJDBCImpl implements ProductoService {
 
-    private Repository<Producto> repositoryJdbc;
-    private Repository<Categoria> categoriaRepository;
+@Service
+@ProductoServicePrincipal
+public class ProductoServiceJDBCImpl implements ProductoService{
+    @Inject
+    private Repository<Producto> crudRepositoryJdbc;
 
-    public ProductoServiceJDBCImpl(Connection conn) {
-        this.repositoryJdbc = new ProductoRepositoryImpl(conn);
-        this.categoriaRepository = new CategoriaRepositoryImpl(conn);
-    }
+    @Inject
+    private Repository<Categoria> crudRepositoryCategoriaJdbc;
 
     @Override
     public List<Producto> listar() {
         try {
-            return repositoryJdbc.listar();
-        } catch (SQLException e) {
-            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+            return crudRepositoryJdbc.listar();
+        } catch (SQLException throwables) {
+            throw new ServiceJdbcException(throwables.getMessage(), throwables.getCause());
         }
     }
 
@@ -38,47 +38,46 @@ public class ProductoServiceJDBCImpl implements ProductoService {
     @Override
     public Optional<Producto> findById(Long id) {
         try {
-            return Optional.ofNullable(repositoryJdbc.porId(id));
-        } catch (SQLException e) {
-            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+            return Optional.ofNullable(crudRepositoryJdbc.porId(id));
+        } catch (SQLException throwables) {
+            throw new ServiceJdbcException(throwables.getMessage(), throwables.getCause());
+
         }
     }
 
     @Override
     public void guardar(Producto producto) {
         try {
-            repositoryJdbc.guardar(producto);
-        } catch (SQLException e) {
-            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+            crudRepositoryJdbc.guardar(producto);
+        } catch (SQLException throwables) {
+            throw new ServiceJdbcException(throwables.getMessage(), throwables.getCause());
         }
     }
 
     @Override
     public void eliminar(Long id) {
         try {
-            repositoryJdbc.eliminar(id);
-        } catch (SQLException e) {
-            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+            crudRepositoryJdbc.eliminar(id);
+        } catch (SQLException throwables) {
+            throw new ServiceJdbcException(throwables.getMessage(), throwables.getCause());
         }
     }
 
     @Override
     public List<Categoria> listarCategorias() {
         try {
-            return categoriaRepository.listar();
-        } catch (SQLException e) {
-            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+            return crudRepositoryCategoriaJdbc.listar();
+        } catch (SQLException throwables) {
+            throw new ServiceJdbcException(throwables.getMessage(), throwables.getCause());
         }
     }
 
     @Override
     public Optional<Categoria> buscarCategoria(Long id) {
         try {
-            return Optional.ofNullable(categoriaRepository.porId(id));
-        } catch (SQLException e) {
-            throw new ServiceJdbcException(e.getMessage(), e.getCause());
+            return Optional.ofNullable(crudRepositoryCategoriaJdbc.porId(id));
+        } catch (SQLException throwables) {
+            throw new ServiceJdbcException(throwables.getMessage(), throwables.getCause());
         }
     }
-
-
 }

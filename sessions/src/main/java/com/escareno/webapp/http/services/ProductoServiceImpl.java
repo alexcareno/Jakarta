@@ -8,17 +8,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ProductoServiceImpl implements ProductoService {
+
+// @Alternative
+public class ProductoServiceImpl implements ProductoService{
     @Override
     public List<Producto> listar() {
-        return Arrays.asList(new Producto(1L, "notebook", "computación", 175000),
-                new Producto(2L, "mesa escritorio", "oficina", 1000),
-                new Producto(3L, "teclado mecánico", "computación", 4000));
+        return Arrays.asList(new Producto(1L, "notebook", "computacion", 175000),
+                new Producto(2L, "mesa escritorio", "oficina", 100000),
+                new Producto(3L, "teclado mecanico", "computacion", 40000));
     }
 
     @Override
     public Optional<Producto> buscar(String nombre) {
-        return listar().stream().filter(p -> p.getNombre().equals(nombre)).findFirst();
+        return Optional.empty();
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<Categoria> listarCategorias() {
-        return List.of();
+        return null;
     }
 
     @Override

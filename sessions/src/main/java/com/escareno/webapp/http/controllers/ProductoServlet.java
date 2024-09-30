@@ -1,7 +1,9 @@
 package com.escareno.webapp.http.controllers;
 
+import com.escareno.webapp.http.config.ProductoServicePrincipal;
 import com.escareno.webapp.http.models.Producto;
 import com.escareno.webapp.http.services.*;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,24 +16,27 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet({"/productos", "/productos.html"})
+
+@WebServlet({"/productos.html", "/productos"})
 public class ProductoServlet extends HttpServlet {
+
+    @Inject
+    @ProductoServicePrincipal
+    private ProductoService service;
+
+    @Inject
+    private LoginService auth;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Connection conn = (Connection) req.getAttribute("conn");
-        ProductoService service = new ProductoServiceJDBCImpl(conn);
+
         List<Producto> productos = service.listar();
 
-        LoginService auth = new LoginServiceSessionImpl();
         Optional<String> usernameOptional = auth.getUsername(req);
 
         req.setAttribute("productos", productos);
         req.setAttribute("username", usernameOptional);
-        req.setAttribute("title", req.getAttribute("title") + ": Listado productos");
+        req.setAttribute("title", req.getAttribute("title") + ": Listado de productos");
         getServletContext().getRequestDispatcher("/listar.jsp").forward(req, resp);
-
-
     }
-
 }

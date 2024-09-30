@@ -1,40 +1,41 @@
 package com.escareno.webapp.http.repositories;
 
+import com.escareno.webapp.http.config.MysqlConn;
 import com.escareno.webapp.http.models.Categoria;
+import jakarta.inject.Inject;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoriaRepositoryImpl implements Repository<Categoria> {
+@Repository
+public class CategoriaRepositoryImpl implements CrudRepository<Categoria> {
 
-    private Connection connection;
+    private Connection conn;
 
-    public CategoriaRepositoryImpl(Connection connection) {
-        this.connection = connection;
+    @Inject
+    public CategoriaRepositoryImpl(@MysqlConn Connection conn) {
+        this.conn = conn;
     }
 
     @Override
     public List<Categoria> listar() throws SQLException {
-
         List<Categoria> categorias = new ArrayList<>();
-
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM categorias")) {
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from categorias")){
             while (rs.next()) {
                 Categoria categoria = getCategoria(rs);
                 categorias.add(categoria);
             }
-        }
 
+        }
         return categorias;
     }
 
     @Override
     public Categoria porId(Long id) throws SQLException {
         Categoria categoria = null;
-
-        try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM categorias WHERE id = ?")) {
+        try (PreparedStatement stmt = conn.prepareStatement("select * from categorias as c where c.id=?")) {
             stmt.setLong(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -42,12 +43,11 @@ public class CategoriaRepositoryImpl implements Repository<Categoria> {
                 }
             }
         }
-
         return categoria;
     }
 
     @Override
-    public void guardar(Categoria item) throws SQLException {
+    public void guardar(Categoria categoria) throws SQLException {
 
     }
 
@@ -56,10 +56,10 @@ public class CategoriaRepositoryImpl implements Repository<Categoria> {
 
     }
 
-    private static Categoria getCategoria(ResultSet rs) throws SQLException {
+    private Categoria getCategoria(ResultSet rs) throws SQLException {
         Categoria categoria = new Categoria();
-        categoria.setId(rs.getLong("id"));
         categoria.setNombre(rs.getString("nombre"));
+        categoria.setId(rs.getLong("id"));
         return categoria;
     }
 }
