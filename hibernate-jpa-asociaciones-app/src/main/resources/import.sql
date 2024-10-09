@@ -1,0 +1,1 @@
+INSERT INTO clientes (id, nombre, apellido, forma_pago, creado_en, editado_en) VALUES (5,'Alex','Lopez','debito',NULL,NULL),(6,'Pepe','Roe','paypal',NULL,NULL),(7,'Andres','Flores','credito',NULL,NULL),(8,'Pepa','Doe','debito',NULL,NULL),(10,'Luis','M','webpay','2024-10-08 21:04:55','2024-10-08 21:05:32');
