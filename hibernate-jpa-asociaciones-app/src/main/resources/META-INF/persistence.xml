@@ -6,6 +6,8 @@
         <class>com.escareno.hibernateapp.entity.Factura</class>
         <class>com.escareno.hibernateapp.entity.Direccion</class>
         <class>com.escareno.hibernateapp.entity.ClienteDetalle</class>
+        <class>com.escareno.hibernateapp.entity.Alumno</class>
+        <class>com.escareno.hibernateapp.entity.Curso</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/java_hibernate_curso"/>
